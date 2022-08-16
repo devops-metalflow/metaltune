@@ -1,0 +1,6 @@
+FROM gcr.io/distroless/base-debian11 AS production-stage
+WORKDIR /
+COPY metaltune /
+USER nonroot:nonroot
+EXPOSE 19093
+CMD ["/metaltune"]

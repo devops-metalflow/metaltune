@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "github.com/devops-metalflow/metaltune/server";
+
+package metaltune;
+
+// The service definition.
+service ServerProto {
+  rpc SendServer (ServerRequest) returns (ServerReply) {}
+}
+
+// The request message.
+message ServerRequest {
+  string apiVersion = 1;
+  string kind = 2;
+  Metadata metadata = 3;
+  Spec spec = 4;
+}
+
+message Metadata {
+  string name = 1;
+}
+
+message Spec {
+  string name = 1;
+}
+
+// The response message.
+message ServerReply {
+  string output = 1;
+}
