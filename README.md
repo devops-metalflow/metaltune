@@ -24,7 +24,7 @@
 
 ```bash
 version=latest make build
-./bin/metaltune --listen-url=:19094
+./bin/metaltune --listen-url=:19093
 ```
 
 
@@ -33,7 +33,7 @@ version=latest make build
 
 ```bash
 version=latest make docker
-docker run ghcr.io/devops-metalflow/metaltune:latest --listen-url=:19094
+docker run ghcr.io/devops-metalflow/metaltune:latest --listen-url=:19093
 ```
 
 
