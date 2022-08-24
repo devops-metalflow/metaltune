@@ -31,10 +31,10 @@ func TestCheckPipe(t *testing.T) {
 		return
 	}
 
-	buf := c.checkPipe(ctx, `echo "Hello World!"`)
+	buf := c.checkPipe(ctx, "ls")
 	assert.Equal(t, 1, len(buf))
 
-	buf = c.checkPipe(ctx, `echo "Hello World!" | grep "Hello"`)
+	buf = c.checkPipe(ctx, "ls | wc -l")
 	assert.Equal(t, 2, len(buf))
 }
 
@@ -47,7 +47,7 @@ func TestRunPipe(t *testing.T) {
 		return
 	}
 
-	err := c.runPipe(ctx, `echo "Hello World!"`, `grep "Hello"`)
+	err := c.runPipe(ctx, "ls", "wc -l")
 	assert.Equal(t, nil, err)
 }
 
@@ -63,6 +63,6 @@ func TestRunCmd(t *testing.T) {
 	err := c.runCmd(ctx, "")
 	assert.NotEqual(t, nil, err)
 
-	err = c.runCmd(ctx, `echo "Hello World!"`)
+	err = c.runCmd(ctx, "ls")
 	assert.Equal(t, nil, err)
 }

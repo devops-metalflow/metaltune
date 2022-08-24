@@ -83,7 +83,7 @@ func (c *Cleanup) checkPipe(_ context.Context, cmd string) []string {
 	if strings.Contains(cmd, "|") {
 		buf = strings.Split(cmd, "|")
 	} else {
-		buf[0] = cmd
+		buf = append(buf, cmd)
 	}
 
 	return buf
@@ -107,8 +107,17 @@ func (c *Cleanup) runPipe(_ context.Context, cmd0, cmd1 string) error {
 
 	reader, writer := io.Pipe()
 
+	defer func(writer *io.PipeWriter) {
+		_ = writer.Close()
+	}(writer)
+
+	defer func(reader *io.PipeReader) {
+		_ = reader.Close()
+	}(reader)
+
 	c0.Stdout = writer
 	c1.Stdin = reader
+	c1.Stdout = os.Stdout
 
 	if err := c0.Start(); err != nil {
 		return errors.Wrap(err, "failed to start cmd0")
@@ -118,20 +127,15 @@ func (c *Cleanup) runPipe(_ context.Context, cmd0, cmd1 string) error {
 		return errors.Wrap(err, "failed to start cmd1")
 	}
 
-	if err := c0.Wait(); err != nil {
-		return errors.Wrap(err, "failed to wait cmd0")
-	}
-
-	if err := writer.Close(); err != nil {
-		return errors.Wrap(err, "failed to close writer")
-	}
+	go func() {
+		defer func(writer *io.PipeWriter) {
+			_ = writer.Close()
+		}(writer)
+		_ = c0.Wait()
+	}()
 
 	if err := c1.Wait(); err != nil {
 		return errors.Wrap(err, "failed to wait cmd1")
-	}
-
-	if err := reader.Close(); err != nil {
-		return errors.Wrap(err, "failed to close reader")
 	}
 
 	return nil
