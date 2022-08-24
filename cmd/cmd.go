@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"gopkg.in/yaml.v3"
 	"io"
 	"log"
 	"os"
@@ -11,9 +10,11 @@ import (
 
 	"github.com/pkg/errors"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"gopkg.in/yaml.v3"
 
 	"github.com/devops-metalflow/metaltune/config"
 	"github.com/devops-metalflow/metaltune/server"
+	"github.com/devops-metalflow/metaltune/tune"
 )
 
 var (
@@ -30,12 +31,17 @@ func Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to init config")
 	}
 
+	t, err := initTune(ctx, c)
+	if err != nil {
+		return errors.Wrap(err, "failed to init tune")
+	}
+
 	s, err := initServer(ctx, c)
 	if err != nil {
 		return errors.Wrap(err, "failed to init server")
 	}
 
-	if err := runServer(ctx, s); err != nil {
+	if err := runServer(ctx, t, s); err != nil {
 		return errors.Wrap(err, "failed to run server")
 	}
 
@@ -63,6 +69,17 @@ func initConfig(_ context.Context, name string) (*config.Config, error) {
 	return c, nil
 }
 
+func initTune(ctx context.Context, cfg *config.Config) (tune.Tune, error) {
+	c := tune.DefaultConfig()
+	if c == nil {
+		return nil, errors.New("failed to config")
+	}
+
+	c.Config = *cfg
+
+	return tune.New(ctx, c), nil
+}
+
 func initServer(ctx context.Context, cfg *config.Config) (server.Server, error) {
 	c := server.DefaultConfig()
 	if c == nil {
@@ -75,7 +92,7 @@ func initServer(ctx context.Context, cfg *config.Config) (server.Server, error) 
 	return server.New(ctx, c), nil
 }
 
-func runServer(ctx context.Context, srv server.Server) error {
+func runServer(ctx context.Context, tn tune.Tune, srv server.Server) error {
 	if err := srv.Init(ctx); err != nil {
 		return errors.New("failed to init")
 	}

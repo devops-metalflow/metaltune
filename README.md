@@ -62,7 +62,7 @@ An example of configuration in [config.yml](https://github.com/devops-metalflow/
 
 ```yaml
 apiVersion: v1
-kind: metalscure
+kind: metaltune
 metadata:
   name: metaltune
 spec:
@@ -106,3 +106,4 @@ Project License can be found [here](LICENSE).
 ## Reference
 
 - [keentune-tuning](https://gist.github.com/craftslab/ff310dfe97b2bb2273b97d0b8f836f44)
+- [ubuntu-clean](https://gist.github.com/craftslab/1a945f6d66892fa431f736bf818889a2)
