@@ -24,7 +24,7 @@
 
 ```bash
 version=latest make build
-./bin/metaltune --listen-url=:19093
+./bin/metaltune --config-file="$PWD"/test/config.yml --listen-url=:19093
 ```
 
 
@@ -33,7 +33,7 @@ version=latest make build
 
 ```bash
 version=latest make docker
-docker run ghcr.io/devops-metalflow/metaltune:latest --listen-url=:19093
+docker run -v "$PWD"/test:/tmp ghcr.io/devops-metalflow/metaltune:latest --config-file=/tmp/config.yml --listen-url=:19093
 ```
 
 
@@ -41,14 +41,15 @@ docker run ghcr.io/devops-metalflow/metaltune:latest --listen-url=:19093
 ## Usage
 
 ```
-usage: metaltune --listen-url=LISTEN-URL [<flags>]
+usage: metaltune --config-file=CONFIG-FILE --listen-url=LISTEN-URL [<flags>]
 
 metaltune
 
 Flags:
-  --help                   Show context-sensitive help (also try --help-long and --help-man).
-  --version                Show application version.
-  --listen-url=LISTEN-URL  Listen URL (host:port)
+  --help                     Show context-sensitive help (also try --help-long and --help-man).
+  --version                  Show application version.
+  --config-file=CONFIG-FILE  Config file (.yml)
+  --listen-url=LISTEN-URL    Listen URL (host:port)
 ```
 
 
