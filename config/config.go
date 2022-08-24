@@ -12,6 +12,14 @@ type MetaData struct {
 }
 
 type Spec struct {
+	KeenTune KeenTune `yaml:"keentune"`
+}
+
+type KeenTune struct {
+	Bench     string
+	Brain     string
+	KeenTuned string
+	Target    string
 }
 
 var (

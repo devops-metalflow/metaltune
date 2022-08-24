@@ -66,10 +66,10 @@ metadata:
   name: metaltune
 spec:
   keentune:
+    bench: ""
+    brain: ""
     keentuned: ""
-    keentune-bench: ""
-    keentune-brain: ""
-    keentune-target: ""
+    target: ""
 ```
 
 

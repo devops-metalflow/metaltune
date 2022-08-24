@@ -8,6 +8,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	"github.com/devops-metalflow/metaltune/config"
 	pb "github.com/devops-metalflow/metaltune/server/proto"
 )
 
@@ -22,7 +23,8 @@ type Server interface {
 }
 
 type Config struct {
-	Addr string
+	Addr   string
+	Config config.Config
 }
 
 type server struct {
@@ -40,11 +42,11 @@ func DefaultConfig() *Config {
 	return &Config{}
 }
 
-func (s *server) Init(ctx context.Context) error {
+func (s *server) Init(_ context.Context) error {
 	return nil
 }
 
-func (s *server) Deinit(ctx context.Context) error {
+func (s *server) Deinit(_ context.Context) error {
 	return nil
 }
 
@@ -59,7 +61,7 @@ func (s *server) Run(_ context.Context) error {
 	return g.Serve(lis)
 }
 
-func (s *server) SendServer(ctx context.Context, in *pb.ServerRequest) (*pb.ServerReply, error) {
+func (s *server) SendServer(_ context.Context, in *pb.ServerRequest) (*pb.ServerReply, error) {
 	log.Printf("Received: %v", in.GetSpec().GetTuning().GetAuto())
 	return &pb.ServerReply{Output: "Hello " + in.GetSpec().GetTuning().GetProfile()}, nil
 }
