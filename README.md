@@ -53,6 +53,27 @@ Flags:
 
 
 
+## Settings
+
+*metaltune* parameters can be set in the directory [config](https://github.com/devops-metalflow/metaltune/blob/main/config).
+
+An example of configuration in [config.yml](https://github.com/devops-metalflow/metaltune/blob/main/config/config.yml):
+
+```yaml
+apiVersion: v1
+kind: metalscure
+metadata:
+  name: metaltune
+spec:
+  keentune:
+    keentuned: ""
+    keentune-bench: ""
+    keentune-brain: ""
+    keentune-target: ""
+```
+
+
+
 ## Protobuf
 
 ```json
@@ -63,7 +84,12 @@ Flags:
     "name": "metaltune"
   },
   "spec": {
-    "name": "foo"
+    "cleanup": true,
+    "tuning": {
+      "auto": true,
+      "profile": "content"
+    },
+    "turbo": true
   }
 }
 ```
@@ -77,3 +103,5 @@ Project License can be found [here](LICENSE).
 
 
 ## Reference
+
+- [keentune-tuning](https://gist.github.com/craftslab/ff310dfe97b2bb2273b97d0b8f836f44)

@@ -22,10 +22,18 @@ message Metadata {
 }
 
 message Spec {
-  string name = 1;
+  bool cleanup = 1;
+  Tuning tuning = 2;
+  bool turbo = 3;
+}
+
+message Tuning {
+  bool auto = 1;
+  string profile = 2;
 }
 
 // The response message.
 message ServerReply {
-  string output = 1;
+  string error = 1;
+  string output = 2;
 }

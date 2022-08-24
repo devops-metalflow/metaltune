@@ -1,5 +1,10 @@
 apiVersion: v1
-kind: metaltune
+kind: metalscure
 metadata:
   name: metaltune
 spec:
+  keentune:
+    keentuned: ""
+    keentune-bench: ""
+    keentune-brain: ""
+    keentune-target: ""

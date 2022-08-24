@@ -60,6 +60,6 @@ func (s *server) Run(_ context.Context) error {
 }
 
 func (s *server) SendServer(ctx context.Context, in *pb.ServerRequest) (*pb.ServerReply, error) {
-	log.Printf("Received: %v", in.GetSpec().GetName())
-	return &pb.ServerReply{Output: "Hello " + in.GetSpec().GetName()}, nil
+	log.Printf("Received: %v", in.GetSpec().GetTuning().GetAuto())
+	return &pb.ServerReply{Output: "Hello " + in.GetSpec().GetTuning().GetProfile()}, nil
 }
