@@ -20,6 +20,16 @@ func TestInitConfig(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
+func TestInitTune(t *testing.T) {
+	ctx := context.Background()
+
+	c, err := initConfig(ctx, "../test/config.yml")
+	assert.Equal(t, nil, err)
+
+	_, err = initTune(ctx, c)
+	assert.Equal(t, nil, err)
+}
+
 func TestInitServer(t *testing.T) {
 	ctx := context.Background()
 

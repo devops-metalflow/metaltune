@@ -2,8 +2,17 @@ package tune
 
 import (
 	"context"
+	"os"
 
 	"github.com/devops-metalflow/metaltune/config"
+)
+
+const (
+	DEBIAN = "debian"
+)
+
+var (
+	HOME = os.Getenv("HOME")
 )
 
 type Tune interface {

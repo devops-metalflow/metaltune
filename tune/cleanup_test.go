@@ -8,14 +8,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFetch(t *testing.T) {
+func TestCleanupFetch(t *testing.T) {
 	c := Cleanup{}
 	ctx := context.Background()
 
 	buf := c.fetch(ctx)
 
 	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily == OS_DEBIAN {
+	if info.PlatformFamily == DEBIAN {
 		assert.NotEqual(t, nil, buf)
 		assert.NotEqual(t, 0, len(buf))
 	} else {

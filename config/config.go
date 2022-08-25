@@ -16,10 +16,7 @@ type Spec struct {
 }
 
 type KeenTune struct {
-	Bench     string
-	Brain     string
-	KeenTuned string
-	Target    string
+	Url string `yaml:"Url"`
 }
 
 var (

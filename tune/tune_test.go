@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTuning(t *testing.T) {
+func TestTune(t *testing.T) {
 	tn := tune{
 		cfg: DefaultConfig(),
 	}

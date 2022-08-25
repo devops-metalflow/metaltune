@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTuningHelper(t *testing.T) {
-	assert.Equal(t, nil, nil)
+func TestTuning(t *testing.T) {
+	tn := Tuning{}
+	assert.NotEqual(t, nil, tn)
 }

@@ -4,7 +4,4 @@ metadata:
   name: metaltune
 spec:
   keentune:
-    bench: ""
-    brain: ""
-    keentuned: ""
-    target
+    url

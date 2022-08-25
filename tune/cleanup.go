@@ -2,7 +2,6 @@ package tune
 
 import (
 	"context"
-	"os"
 
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/host"
@@ -11,15 +10,9 @@ import (
 	"github.com/devops-metalflow/metaltune/pipe"
 )
 
-const (
-	OS_DEBIAN = "debian"
-)
-
 var (
-	envHome = os.Getenv("HOME")
-
-	debianCmds = []string{
-		"rm -rf " + envHome + "/.cache/thumbnails/*",
+	cleanupCmds = []string{
+		"rm -rf " + HOME + "/.cache/thumbnails/*",
 		"apt-get autoremove --purge",
 		"apt-get clean",
 		"journalctl --vacuum-time=1s",
@@ -79,8 +72,8 @@ func (c *Cleanup) fetch(ctx context.Context) []string {
 		return nil
 	}
 
-	if info.PlatformFamily == OS_DEBIAN {
-		buf = debianCmds
+	if info.PlatformFamily == DEBIAN {
+		buf = cleanupCmds
 	}
 
 	return buf

@@ -67,10 +67,7 @@ metadata:
   name: metaltune
 spec:
   keentune:
-    bench: ""
-    brain: ""
-    keentuned: ""
-    target: ""
+    url: "127.0.0.1:19095"
 ```
 
 

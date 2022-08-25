@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	OS_DEBIAN = "debian"
+	DEBIAN = "debian"
 )
 
 func TestCheck(t *testing.T) {
@@ -20,7 +20,7 @@ func TestCheck(t *testing.T) {
 	ctx := context.Background()
 
 	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily != OS_DEBIAN {
+	if info.PlatformFamily != DEBIAN {
 		return
 	}
 
@@ -39,7 +39,7 @@ func TestRunCmd(t *testing.T) {
 	ctx := context.Background()
 
 	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily != OS_DEBIAN {
+	if info.PlatformFamily != DEBIAN {
 		return
 	}
 
@@ -58,7 +58,7 @@ func TestRunPipe(t *testing.T) {
 	ctx := context.Background()
 
 	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily != OS_DEBIAN {
+	if info.PlatformFamily != DEBIAN {
 		return
 	}
 
