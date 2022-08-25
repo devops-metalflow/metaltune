@@ -42,15 +42,15 @@ func (t *tune) Deinit(_ context.Context) error {
 
 func (t *tune) Cleanup(ctx context.Context) error {
 	r := Cleanup{}
-	return r.Run(ctx)
+	return r.Run(ctx, &t.cfg.Config)
 }
 
 func (t *tune) Tuning(ctx context.Context) error {
 	tn := Tuning{}
-	return tn.Run(ctx)
+	return tn.Run(ctx, &t.cfg.Config)
 }
 
 func (t *tune) Turbo(ctx context.Context) error {
 	tb := Turbo{}
-	return tb.Run(ctx)
+	return tb.Run(ctx, &t.cfg.Config)
 }
