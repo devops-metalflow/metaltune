@@ -25,6 +25,8 @@ const (
 
 // nolint: funlen
 func initTurboTest() {
+	_ = os.MkdirAll(BaseTest, os.ModePerm)
+
 	// online
 	file, _ := os.Create(filepath.Join(BaseTest, Range))
 	_ = file.Close()
@@ -317,7 +319,7 @@ func TestReadFile(t *testing.T) {
 	buf = strings.Trim(strings.Trim(buf, "\n"), " ")
 	b, err := strconv.ParseInt(strings.Split(buf, " ")[0], IntBase, IntBit)
 	assert.Equal(t, nil, err)
-	assert.Equal(t, Cur, b)
+	assert.Equal(t, Cur, int(b))
 
 	deinitTurboTest()
 }
@@ -329,7 +331,7 @@ func TestWriteFile(t *testing.T) {
 	ctx := context.Background()
 
 	p := filepath.Join(tb.base, "cpu0", "cpufreq", SetSpeed)
-	err := tb.writeFile(ctx, p, string(rune(Max)))
+	err := tb.writeFile(ctx, p, strconv.Itoa(Max))
 	assert.Equal(t, nil, err)
 
 	buf, err := tb.readFile(ctx, p)
@@ -338,7 +340,7 @@ func TestWriteFile(t *testing.T) {
 	buf = strings.Trim(strings.Trim(buf, "\n"), " ")
 	b, err := strconv.ParseInt(strings.Split(buf, " ")[0], IntBase, IntBit)
 	assert.Equal(t, nil, err)
-	assert.Equal(t, Max, b)
+	assert.Equal(t, Max, int(b))
 
 	deinitTurboTest()
 }

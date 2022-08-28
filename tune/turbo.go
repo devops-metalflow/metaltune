@@ -72,7 +72,7 @@ func (t *Turbo) Run(ctx context.Context) error {
 }
 
 func (t *Turbo) getFreq(ctx context.Context) (map[int]int, error) {
-	var freqs map[int]int
+	freqs := make(map[int]int)
 
 	buf, err := t.getVariable(ctx, CurFreq)
 	if err != nil {
@@ -91,7 +91,7 @@ func (t *Turbo) getFreq(ctx context.Context) (map[int]int, error) {
 }
 
 func (t *Turbo) getMaxFreq(ctx context.Context) (map[int]int, error) {
-	var freqs map[int]int
+	freqs := make(map[int]int)
 
 	cpus, err := t.getRange(ctx, filepath.Join(t.base, Range))
 	if err != nil {
@@ -116,7 +116,7 @@ func (t *Turbo) getMaxFreq(ctx context.Context) (map[int]int, error) {
 }
 
 func (t *Turbo) getMinFreq(ctx context.Context) (map[int]int, error) {
-	var freqs map[int]int
+	freqs := make(map[int]int)
 
 	cpus, err := t.getRange(ctx, filepath.Join(t.base, Range))
 	if err != nil {
@@ -158,7 +158,7 @@ func (t *Turbo) setFreq(ctx context.Context, freq int) error {
 
 	for _, item := range cpus {
 		if freq < min[item] || freq > max[item] {
-			return errors.Wrap(err, "invalid frequency")
+			return errors.New("invalid frequency")
 		}
 		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", SetSpeed)
 		if err := t.writeFile(ctx, p, strconv.Itoa(freq)); err != nil {
@@ -194,7 +194,7 @@ func (t *Turbo) getOnline(ctx context.Context) ([]int, error) {
 }
 
 func (t *Turbo) getVariable(ctx context.Context, name string) (map[int]string, error) {
-	var freqs map[int]string
+	freqs := make(map[int]string)
 
 	r, err := t.getRange(ctx, filepath.Join(t.base, Range))
 	if err != nil {
@@ -224,7 +224,7 @@ func (t *Turbo) getRange(ctx context.Context, name string) ([]int, error) {
 
 	buf = strings.Trim(strings.Trim(buf, "\n"), " ")
 	if buf == "" {
-		return nil, errors.Wrap(err, "failed to trim")
+		return nil, errors.New("failed to trim")
 	}
 
 	for _, item := range strings.Split(buf, ",") {
