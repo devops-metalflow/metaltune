@@ -15,7 +15,7 @@ func TestCleanupFetch(t *testing.T) {
 	buf := c.fetch(ctx)
 
 	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily == DEBIAN {
+	if info.PlatformFamily == Platform {
 		assert.NotEqual(t, nil, buf)
 		assert.NotEqual(t, 0, len(buf))
 	} else {

@@ -2,6 +2,7 @@ package tune
 
 import (
 	"context"
+	"os"
 
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/host"
@@ -10,9 +11,14 @@ import (
 	"github.com/devops-metalflow/metaltune/pipe"
 )
 
+const (
+	Platform = "debian"
+)
+
 var (
-	cleanupCmds = []string{
-		"rm -rf " + HOME + "/.cache/thumbnails/*",
+	Home = os.Getenv("HOME")
+	Cmds = []string{
+		"rm -rf " + Home + "/.cache/thumbnails/*",
 		"apt-get autoremove --purge",
 		"apt-get clean",
 		"journalctl --vacuum-time=1s",
@@ -25,28 +31,35 @@ var (
 )
 
 type Cleanup struct {
+	pipe pipe.Pipe
 }
 
-func (c *Cleanup) Run(ctx context.Context, cfg *config.Config) error {
-	p, err := c.new(ctx, cfg)
+func (c *Cleanup) Init(ctx context.Context, cfg *config.Config) error {
+	var err error
+
+	c.pipe, err = c.new(ctx, cfg)
 	if err != nil {
 		return errors.Wrap(err, "failed to new")
 	}
 
-	if err := p.Init(ctx); err != nil {
+	if err := c.pipe.Init(ctx); err != nil {
 		return errors.Wrap(err, "failed to init")
 	}
 
-	defer func(p pipe.Pipe, ctx context.Context) {
-		_ = p.Deinit(ctx)
-	}(p, ctx)
+	return nil
+}
 
+func (c *Cleanup) Deinit(ctx context.Context) error {
+	return c.pipe.Deinit(ctx)
+}
+
+func (c *Cleanup) Run(ctx context.Context) error {
 	buf := c.fetch(ctx)
 	if buf == nil || len(buf) == 0 {
 		return errors.New("failed to fetch")
 	}
 
-	if err := p.Run(ctx, buf); err != nil {
+	if err := c.pipe.Run(ctx, buf); err != nil {
 		return errors.Wrap(err, "failed to run")
 	}
 
@@ -72,8 +85,8 @@ func (c *Cleanup) fetch(ctx context.Context) []string {
 		return nil
 	}
 
-	if info.PlatformFamily == DEBIAN {
-		buf = cleanupCmds
+	if info.PlatformFamily == Platform {
+		buf = Cmds
 	}
 
 	return buf

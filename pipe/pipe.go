@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	PIPE_MAX = 2
+	PipeMax = 2
 )
 
 type Pipe interface {
@@ -58,7 +58,7 @@ func (p *pipe) Run(ctx context.Context, cmds []string) error {
 			if err := p.runCmd(ctx, b[0]); err != nil {
 				return errors.Wrap(err, "failed to run command")
 			}
-		} else if len(b) == PIPE_MAX {
+		} else if len(b) == PipeMax {
 			if err := p.runPipe(ctx, b[0], b[1]); err != nil {
 				return errors.Wrap(err, "failed to run pipe")
 			}

@@ -1,24 +1,41 @@
 package tune
 
 import (
-	"context"
 	"testing"
-
-	"github.com/shirou/gopsutil/v3/host"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestTurboFetch(t *testing.T) {
-	tb := Turbo{}
-	ctx := context.Background()
+func initTurboTest() {
+}
 
-	buf := tb.fetch(ctx)
+func TestGetFreq(t *testing.T) {
+}
 
-	info, _ := host.InfoWithContext(ctx)
-	if info.PlatformFamily == DEBIAN {
-		assert.NotEqual(t, nil, buf)
-		assert.NotEqual(t, 0, len(buf))
-	} else {
-		assert.Equal(t, 0, len(buf))
-	}
+func TestMaxFreq(t *testing.T) {
+}
+
+func TestMinFreq(t *testing.T) {
+}
+
+func TestSetFreq(t *testing.T) {
+}
+
+func TestGetGovernor(t *testing.T) {
+}
+
+func TestSetGovernor(t *testing.T) {
+}
+
+func TestGetOnline(t *testing.T) {
+}
+
+func TestGetVariable(t *testing.T) {
+}
+
+func TestGetRange(t *testing.T) {
+}
+
+func TestReadFile(t *testing.T) {
+}
+
+func TestWriteFile(t *testing.T) {
 }

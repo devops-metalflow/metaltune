@@ -3,5 +3,5 @@ kind: metaltune
 metadata:
   name: metaltune
 spec:
-  keentune:
+  tuning:
     url: "127.0.0.1:19095"

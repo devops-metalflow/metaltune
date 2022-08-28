@@ -2,17 +2,10 @@ package tune
 
 import (
 	"context"
-	"os"
+
+	"github.com/pkg/errors"
 
 	"github.com/devops-metalflow/metaltune/config"
-)
-
-const (
-	DEBIAN = "debian"
-)
-
-var (
-	HOME = os.Getenv("HOME")
 )
 
 type Tune interface {
@@ -51,15 +44,42 @@ func (t *tune) Deinit(_ context.Context) error {
 
 func (t *tune) Cleanup(ctx context.Context) error {
 	r := Cleanup{}
-	return r.Run(ctx, &t.cfg.Config)
+
+	if err := r.Init(ctx, &t.cfg.Config); err != nil {
+		return errors.Wrap(err, "failed to init")
+	}
+
+	defer func(r *Cleanup, ctx context.Context) {
+		_ = r.Deinit(ctx)
+	}(&r, ctx)
+
+	return r.Run(ctx)
 }
 
 func (t *tune) Tuning(ctx context.Context) error {
 	tn := Tuning{}
-	return tn.Run(ctx, &t.cfg.Config)
+
+	if err := tn.Init(ctx, &t.cfg.Config); err != nil {
+		return errors.Wrap(err, "failed to init")
+	}
+
+	defer func(tn *Tuning, ctx context.Context) {
+		_ = tn.Deinit(ctx)
+	}(&tn, ctx)
+
+	return tn.Run(ctx)
 }
 
 func (t *tune) Turbo(ctx context.Context) error {
 	tb := Turbo{}
-	return tb.Run(ctx, &t.cfg.Config)
+
+	if err := tb.Init(ctx, &t.cfg.Config); err != nil {
+		return errors.Wrap(err, "failed to init")
+	}
+
+	defer func(tb *Turbo, ctx context.Context) {
+		_ = tb.Deinit(ctx)
+	}(&tb, ctx)
+
+	return tb.Run(ctx)
 }

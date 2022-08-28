@@ -66,7 +66,7 @@ kind: metaltune
 metadata:
   name: metaltune
 spec:
-  keentune:
+  tuning:
     url: "127.0.0.1:19095"
 ```
 
@@ -102,5 +102,14 @@ Project License can be found [here](LICENSE).
 
 ## Reference
 
+- [auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq)
+- [cpufreq](https://abcdxyzk.github.io/blog/2015/08/12/kernel-cpufreq/)
+- [cpufreq](https://github.com/konkor/cpufreq)
+- [cpufreq](https://github.com/VitorRamos/cpufreq)
+- [cpufrequtils](https://packages.ubuntu.com/bionic/cpufrequtils)
+- [cpufrequtils](https://www.icode9.com/content-3-1252636.html)
+- [frequency-scaling](https://www.thinkwiki.org/wiki/How_to_make_use_of_Dynamic_Frequency_Scaling)
 - [keentune-tuning](https://gist.github.com/craftslab/ff310dfe97b2bb2273b97d0b8f836f44)
+- [turbo-boost](https://huataihuang.gitbooks.io/cloud-atlas/content/os/linux/kernel/cpu/intel_turbo_boost_and_pstate.html)
 - [ubuntu-clean](https://gist.github.com/craftslab/1a945f6d66892fa431f736bf818889a2)
+- [ubuntu-tuning](https://its401.com/article/MMTS_yang/122244404)

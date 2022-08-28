@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	KIND = "metaltune"
+	Kind = "metaltune"
 )
 
 type Server interface {

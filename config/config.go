@@ -12,10 +12,10 @@ type MetaData struct {
 }
 
 type Spec struct {
-	KeenTune KeenTune `yaml:"keentune"`
+	Tuning Tuning `yaml:"tuning"`
 }
 
-type KeenTune struct {
+type Tuning struct {
 	Url string `yaml:"Url"`
 }
 

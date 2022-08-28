@@ -3,5 +3,5 @@ kind: metaltune
 metadata:
   name: metaltune
 spec:
-  keentune:
+  tuning:
     url
