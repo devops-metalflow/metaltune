@@ -86,7 +86,7 @@ func initServer(ctx context.Context, cfg *config.Config) (server.Server, error) 
 		return nil, errors.New("failed to config")
 	}
 
-	c.Addr = *listenUrl
+	c.Address = *listenUrl
 	c.Config = *cfg
 
 	return server.New(ctx, c), nil
