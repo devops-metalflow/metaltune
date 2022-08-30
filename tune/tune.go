@@ -12,7 +12,7 @@ type Tune interface {
 	Init(context.Context) error
 	Deinit(context.Context) error
 	Cleanup(context.Context) error
-	Tuning(context.Context, bool, string) error
+	Tuning(context.Context, bool, string) (string, error)
 	Turbo(context.Context) error
 }
 
@@ -56,18 +56,18 @@ func (t *tune) Cleanup(ctx context.Context) error {
 	return r.Run(ctx)
 }
 
-func (t *tune) Tuning(ctx context.Context, auto bool, profile string) error {
+func (t *tune) Tuning(ctx context.Context, auto bool, profile string) (string, error) {
 	tn := Tuning{}
 
 	if err := tn.Init(ctx, &t.cfg.Config); err != nil {
-		return errors.Wrap(err, "failed to init")
+		return "", errors.Wrap(err, "failed to init")
 	}
 
 	defer func(tn *Tuning, ctx context.Context) {
 		_ = tn.Deinit(ctx)
 	}(&tn, ctx)
 
-	return tn.Run(ctx)
+	return tn.Run(ctx, auto, profile)
 }
 
 func (t *tune) Turbo(ctx context.Context) error {

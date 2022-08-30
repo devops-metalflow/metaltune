@@ -68,6 +68,8 @@ metadata:
 spec:
   tuning:
     url: "127.0.0.1:19095"
+    user: "user"
+    pass: "pass"
 ```
 
 

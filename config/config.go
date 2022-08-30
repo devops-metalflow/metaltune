@@ -16,7 +16,9 @@ type Spec struct {
 }
 
 type Tuning struct {
-	Url string `yaml:"Url"`
+	Url  string `yaml:"url"`
+	User string `yaml:"user"`
+	Pass string `yaml:"pass"`
 }
 
 var (

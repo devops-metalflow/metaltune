@@ -71,12 +71,15 @@ func (s *server) Run(_ context.Context) error {
 }
 
 func (s *server) SendServer(ctx context.Context, in *pb.ServerRequest) (*pb.ServerReply, error) {
+	var buf string
+	var err error
+
 	if in.GetKind() != Kind {
 		return &pb.ServerReply{Error: "invalid kind"}, nil
 	}
 
 	if in.GetSpec().GetCleanup() {
-		if err := s.cfg.Tune.Cleanup(ctx); err != nil {
+		if err = s.cfg.Tune.Cleanup(ctx); err != nil {
 			return &pb.ServerReply{Error: "failed to cleanup"}, nil
 		}
 	}
@@ -85,16 +88,17 @@ func (s *server) SendServer(ctx context.Context, in *pb.ServerRequest) (*pb.Serv
 	profile := in.GetSpec().GetTuning().GetProfile()
 
 	if auto || profile != "" {
-		if err := s.cfg.Tune.Tuning(ctx, auto, profile); err != nil {
+		buf, err = s.cfg.Tune.Tuning(ctx, auto, profile)
+		if err != nil {
 			return &pb.ServerReply{Error: "failed to tuning"}, nil
 		}
 	}
 
 	if in.GetSpec().GetTurbo() {
-		if err := s.cfg.Tune.Turbo(ctx); err != nil {
+		if err = s.cfg.Tune.Turbo(ctx); err != nil {
 			return &pb.ServerReply{Error: "failed to turbo"}, nil
 		}
 	}
 
-	return &pb.ServerReply{Output: "completed"}, nil
+	return &pb.ServerReply{Output: buf}, nil
 }

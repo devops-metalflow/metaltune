@@ -4,4 +4,6 @@ metadata:
   name: metaltune
 spec:
   tuning:
-    url
+    url: "127.0.0.1:19095"
+    user: "user"
+    pass
