@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	base64Decode = "abc123!?$*&()'-=@~"
-	base64Encode = "YWJjMTIzIT8kKiYoKSctPUB+"
+	profile = "content"
 )
 
 func TestAddress(t *testing.T) {
@@ -29,7 +28,10 @@ func TestAuto(t *testing.T) {
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		b, _ := json.Marshal(map[string]string{
-			"profile": base64Encode,
+			"address": "127.0.0.1",
+			"msg":     "",
+			"profile": profile,
+			"suc":     "true",
 		})
 		_, _ = w.Write(b)
 	}))
@@ -39,7 +41,7 @@ func TestAuto(t *testing.T) {
 	buf, err := tn.auto(ctx)
 
 	assert.Equal(t, nil, err)
-	assert.Equal(t, base64Decode, buf)
+	assert.Equal(t, profile, buf)
 }
 
 func TestProfile(t *testing.T) {
@@ -47,28 +49,16 @@ func TestProfile(t *testing.T) {
 	ctx := context.Background()
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
+		b, _ := json.Marshal(map[string]string{
+			"msg": "",
+			"suc": "true",
+		})
+		_, _ = w.Write(b)
 	}))
 	defer ts.Close()
 
 	tn.Url = ts.URL
-	err := tn.profile(ctx, base64Decode)
+	err := tn.profile(ctx, profile)
 
 	assert.Equal(t, nil, err)
-}
-
-func TestDecode(t *testing.T) {
-	tn := Tuning{}
-	ctx := context.Background()
-
-	buf := tn.decode(ctx, base64Encode)
-	assert.Equal(t, base64Decode, buf)
-}
-
-func TestEncode(t *testing.T) {
-	tn := Tuning{}
-	ctx := context.Background()
-
-	buf := tn.encode(ctx, base64Decode)
-	assert.Equal(t, base64Encode, buf)
 }

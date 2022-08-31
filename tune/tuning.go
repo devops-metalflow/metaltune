@@ -3,7 +3,6 @@ package tune
 import (
 	"bytes"
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"io"
 	"net"
@@ -13,6 +12,10 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/devops-metalflow/metaltune/config"
+)
+
+const (
+	statusOK = "true"
 )
 
 type Tuning struct {
@@ -68,7 +71,7 @@ func (t *Tuning) address(_ context.Context) string {
 	return addr
 }
 
-func (t *Tuning) auto(ctx context.Context) (string, error) {
+func (t *Tuning) auto(_ context.Context) (string, error) {
 	buf := map[string]string{
 		"address": t.Address,
 	}
@@ -108,13 +111,17 @@ func (t *Tuning) auto(ctx context.Context) (string, error) {
 		return "", errors.Wrap(err, "failed to unmarshal")
 	}
 
-	return t.decode(ctx, data["profile"].(string)), nil
+	if data["suc"].(string) != statusOK {
+		return "", errors.New(data["msg"].(string))
+	}
+
+	return data["profile"].(string), nil
 }
 
-func (t *Tuning) profile(ctx context.Context, data string) error {
+func (t *Tuning) profile(_ context.Context, profile string) error {
 	buf := map[string]string{
 		"address": t.Address,
-		"profile": t.encode(ctx, data),
+		"profile": profile,
 	}
 
 	body, err := json.Marshal(buf)
@@ -142,18 +149,19 @@ func (t *Tuning) profile(ctx context.Context, data string) error {
 		return errors.New("invalid status")
 	}
 
-	return nil
-}
-
-func (t *Tuning) decode(_ context.Context, data string) string {
-	buf, err := base64.StdEncoding.DecodeString(data)
+	ret, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return ""
+		return errors.Wrap(err, "failed to read")
 	}
 
-	return string(buf)
-}
+	data := make(map[string]interface{})
+	if err := json.Unmarshal(ret, &data); err != nil {
+		return errors.Wrap(err, "failed to unmarshal")
+	}
 
-func (t *Tuning) encode(_ context.Context, data string) string {
-	return base64.StdEncoding.EncodeToString([]byte(data))
+	if data["suc"].(string) != statusOK {
+		return errors.New(data["msg"].(string))
+	}
+
+	return nil
 }
