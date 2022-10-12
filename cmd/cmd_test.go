@@ -36,6 +36,9 @@ func TestInitServer(t *testing.T) {
 	c, err := initConfig(ctx, "../test/config.yml")
 	assert.Equal(t, nil, err)
 
-	_, err = initServer(ctx, c)
+	tn, err := initTune(ctx, c)
+	assert.Equal(t, nil, err)
+
+	_, err = initServer(ctx, c, tn)
 	assert.Equal(t, nil, err)
 }

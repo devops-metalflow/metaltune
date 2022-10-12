@@ -36,7 +36,7 @@ func Run(ctx context.Context) error {
 		return errors.Wrap(err, "failed to init tune")
 	}
 
-	s, err := initServer(ctx, c)
+	s, err := initServer(ctx, c, t)
 	if err != nil {
 		return errors.Wrap(err, "failed to init server")
 	}
@@ -80,7 +80,7 @@ func initTune(ctx context.Context, cfg *config.Config) (tune.Tune, error) {
 	return tune.New(ctx, c), nil
 }
 
-func initServer(ctx context.Context, cfg *config.Config) (server.Server, error) {
+func initServer(ctx context.Context, cfg *config.Config, tn tune.Tune) (server.Server, error) {
 	c := server.DefaultConfig()
 	if c == nil {
 		return nil, errors.New("failed to config")
@@ -88,6 +88,7 @@ func initServer(ctx context.Context, cfg *config.Config) (server.Server, error) 
 
 	c.Address = *listenUrl
 	c.Config = *cfg
+	c.Tune = tn
 
 	return server.New(ctx, c), nil
 }

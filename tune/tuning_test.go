@@ -27,11 +27,11 @@ func TestAuto(t *testing.T) {
 	ctx := context.Background()
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		b, _ := json.Marshal(map[string]string{
+		b, _ := json.Marshal(map[string]interface{}{
 			"address": "127.0.0.1",
 			"msg":     "",
 			"profile": profile,
-			"suc":     "true",
+			"suc":     true,
 		})
 		_, _ = w.Write(b)
 	}))
@@ -49,9 +49,9 @@ func TestProfile(t *testing.T) {
 	ctx := context.Background()
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		b, _ := json.Marshal(map[string]string{
+		b, _ := json.Marshal(map[string]interface{}{
 			"msg": "",
-			"suc": "true",
+			"suc": true,
 		})
 		_, _ = w.Write(b)
 	}))

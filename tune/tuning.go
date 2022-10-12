@@ -111,7 +111,7 @@ func (t *Tuning) auto(_ context.Context) (string, error) {
 		return "", errors.Wrap(err, "failed to unmarshal")
 	}
 
-	if data["suc"].(string) != statusOK {
+	if !data["suc"].(bool) {
 		return "", errors.New(data["msg"].(string))
 	}
 
@@ -159,7 +159,7 @@ func (t *Tuning) profile(_ context.Context, profile string) error {
 		return errors.Wrap(err, "failed to unmarshal")
 	}
 
-	if data["suc"].(string) != statusOK {
+	if !data["suc"].(bool) {
 		return errors.New(data["msg"].(string))
 	}
 
