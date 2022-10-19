@@ -14,10 +14,6 @@ import (
 	"github.com/devops-metalflow/metaltune/config"
 )
 
-const (
-	statusOK = "true"
-)
-
 type Tuning struct {
 	Address string
 	Pass    string

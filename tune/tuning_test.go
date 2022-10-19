@@ -11,6 +11,7 @@ import (
 )
 
 const (
+	data    = "content"
 	profile = "content"
 )
 
@@ -28,10 +29,11 @@ func TestAuto(t *testing.T) {
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		b, _ := json.Marshal(map[string]interface{}{
-			"address": "127.0.0.1",
-			"msg":     "",
-			"profile": profile,
-			"suc":     true,
+			"address":  "127.0.0.1",
+			"jsondata": data,
+			"msg":      "",
+			"profile":  profile,
+			"suc":      true,
 		})
 		_, _ = w.Write(b)
 	}))
