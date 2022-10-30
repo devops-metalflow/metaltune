@@ -12,7 +12,7 @@ const (
 	Debian = "debian"
 )
 
-func TestCheck(t *testing.T) {
+func TestBuild(t *testing.T) {
 	p := pipe{
 		cfg: DefaultConfig(),
 	}
@@ -24,10 +24,10 @@ func TestCheck(t *testing.T) {
 		return
 	}
 
-	buf := p.check(ctx, "ls")
+	buf := p.build(ctx, "ls")
 	assert.Equal(t, 1, len(buf))
 
-	buf = p.check(ctx, "ls | wc -l")
+	buf = p.build(ctx, "ls | wc -l")
 	assert.Equal(t, 2, len(buf))
 }
 

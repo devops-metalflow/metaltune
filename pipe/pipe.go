@@ -50,16 +50,16 @@ func (p *pipe) Deinit(_ context.Context) error {
 
 func (p *pipe) Run(ctx context.Context, cmds []string) error {
 	for _, item := range cmds {
-		b := p.check(ctx, item)
-		if b == nil || len(b) == 0 || len(b) > 2 {
+		b := p.build(ctx, item)
+		if b == nil || len(b) == 0 || len(b) > PipeMax {
 			return errors.New("pipe (>1) not supported")
 		}
 		if len(b) == 1 {
-			if err := p.runCmd(ctx, b[0]); err != nil {
+			if err := p.runCmd(ctx, strings.Trim(b[0], " ")); err != nil {
 				return errors.Wrap(err, "failed to run command")
 			}
 		} else if len(b) == PipeMax {
-			if err := p.runPipe(ctx, b[0], b[1]); err != nil {
+			if err := p.runPipe(ctx, strings.Trim(b[0], " "), strings.Trim(b[1], " ")); err != nil {
 				return errors.Wrap(err, "failed to run pipe")
 			}
 		} else {
@@ -70,7 +70,7 @@ func (p *pipe) Run(ctx context.Context, cmds []string) error {
 	return nil
 }
 
-func (p *pipe) check(_ context.Context, cmd string) []string {
+func (p *pipe) build(_ context.Context, cmd string) []string {
 	var buf []string
 
 	if strings.Contains(cmd, "|") {

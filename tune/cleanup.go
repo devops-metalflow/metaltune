@@ -19,14 +19,14 @@ var (
 	Home = os.Getenv("HOME")
 	Cmds = []string{
 		"rm -rf " + Home + "/.cache/thumbnails/*",
-		"apt autoremove --purge",
-		"apt clean",
+		"apt autoremove --purge -y",
+		"apt clean -y",
 		"journalctl --vacuum-time=1s",
 		"rm -rf /var/lib/apt/lists/*",
 		"rm -rf /var/log/*",
 		"rm -rf /tmp/*",
 		"sync",
-		`echo "3" | tee /proc/sys/vm/drop_caches`,
+		`echo 3 | tee /proc/sys/vm/drop_caches`,
 	}
 )
 
