@@ -19,9 +19,11 @@ const (
 )
 
 const (
-	Base  = "/sys/devices/system/cpu"
-	Range = "online"
-	Len   = 2
+	Base    = "/sys/devices/system/cpu"
+	CPU     = "cpu"
+	CPUFREQ = "cpufreq"
+	Range   = "online"
+	Len     = 2
 )
 
 const (
@@ -99,7 +101,7 @@ func (t *Turbo) getMaxFreq(ctx context.Context) (map[int]int, error) {
 	}
 
 	for _, item := range cpus {
-		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", MaxFreq)
+		p := filepath.Join(t.base, CPU+strconv.Itoa(item), CPUFREQ, MaxFreq)
 		b, err := t.readFile(ctx, p)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to read")
@@ -124,7 +126,7 @@ func (t *Turbo) getMinFreq(ctx context.Context) (map[int]int, error) {
 	}
 
 	for _, item := range cpus {
-		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", MinFreq)
+		p := filepath.Join(t.base, CPU+strconv.Itoa(item), CPUFREQ, MinFreq)
 		b, err := t.readFile(ctx, p)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to read")
@@ -141,12 +143,12 @@ func (t *Turbo) getMinFreq(ctx context.Context) (map[int]int, error) {
 }
 
 func (t *Turbo) setFreq(ctx context.Context, freq int) error {
-	max, err := t.getMaxFreq(ctx)
+	_max, err := t.getMaxFreq(ctx)
 	if err != nil {
 		return errors.Wrap(err, "failed to get")
 	}
 
-	min, err := t.getMinFreq(ctx)
+	_min, err := t.getMinFreq(ctx)
 	if err != nil {
 		return errors.Wrap(err, "failed to get")
 	}
@@ -157,10 +159,10 @@ func (t *Turbo) setFreq(ctx context.Context, freq int) error {
 	}
 
 	for _, item := range cpus {
-		if freq < min[item] || freq > max[item] {
+		if freq < _min[item] || freq > _max[item] {
 			return errors.New("invalid frequency")
 		}
-		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", SetSpeed)
+		p := filepath.Join(t.base, CPU+strconv.Itoa(item), CPUFREQ, SetSpeed)
 		if err := t.writeFile(ctx, p, strconv.Itoa(freq)); err != nil {
 			return errors.Wrap(err, "failed to write")
 		}
@@ -180,7 +182,7 @@ func (t *Turbo) setGovernor(ctx context.Context, name string) error {
 	}
 
 	for _, item := range r {
-		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", ScalGov)
+		p := filepath.Join(t.base, CPU+strconv.Itoa(item), CPUFREQ, ScalGov)
 		if err := t.writeFile(ctx, p, name); err != nil {
 			return errors.Wrap(err, "failed to write")
 		}
@@ -202,7 +204,7 @@ func (t *Turbo) getVariable(ctx context.Context, name string) (map[int]string, e
 	}
 
 	for _, item := range r {
-		p := filepath.Join(t.base, "cpu"+strconv.Itoa(item), "cpufreq", name)
+		p := filepath.Join(t.base, CPU+strconv.Itoa(item), CPUFREQ, name)
 		b, err := t.readFile(ctx, p)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to read")
